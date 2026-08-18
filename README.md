@@ -10,7 +10,10 @@
 
 <p align="center">
   <a href="https://trendshift.io/repositories/12327" target="_blank"><img src="https://trendshift.io/api/badge/repositories/12327" alt="Guovin%2Fiptv-api | Trendshift" style="width: 250px; height: 55px;" width="250" height="55"/></a>
-  <a href="https://trendshift.io/repositories/12327?utm_source=trendshift-badge&amp;utm_medium=badge&amp;utm_campaign=badge-trendshift-12327" target="_blank" rel="noopener noreferrer"><img src="https://trendshift.io/api/badge/trendshift/repositories/12327/weekly" alt="Guovin%2Fiptv-api | Trendshift" width="250" height="55"/></a>
+  <a href="https://trendshift.io/repositories/12327?utm_source=trendshift-badge&amp;utm_medium=badge&amp;utm_campaign=badge-trendshift-12327" target="_blank" rel="noopener noreferrer"><img src="https://trendshift.io/api/badge/trendshift/repositories/12327/weekly" alt="Guovin%2Fiptv-api | Trendshift" style="width: 250px; height: 55px;" width="250" height="55"/></a>
+  <a href="https://www.star-history.com/guovin/iptv-api">
+    <picture><source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/badge?repo=Guovin/iptv-api&type=rank&theme=dark" /><source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/badge?repo=Guovin/iptv-api&type=rank" /><img src="https://api.star-history.com/badge?repo=Guovin/iptv-api&type=rank" alt="Star History Rank" style="height: 55px;" height="55" /></picture>
+  </a>
 </p>
 
 <p align="center">
@@ -104,24 +107,24 @@
 
 ## 核心特性
 
-| 功能        | 支持状态 | 说明                                         |
+| 功能        | 支&#8288;持&#8288;状&#8288;态 | 说明                                         |
 |:----------|:----:|:-------------------------------------------|
-| **自定义模板** |  ✅   | 生成自己想要的频道菜单                                |
-| **频道别名**  |  ✅   | 提升频道结果获取量与准确率，支持正则表达式                      |
-| **多源聚合**  |  ✅   | 本地源、订阅源（支持设置UA，识别无效地址并自动停用）                |
-| **推流**    |  ✅   | 改善弱网播放体验，支持浏览器直接播放，自动转码适配                  |
-| **回放类接口** |  ✅   | 回放类接口的获取与生成                                |
+| **自&#8288;定&#8288;义&#8288;模&#8288;板** |  ✅   | 生成自己想要的频道菜单                                |
+| **频&#8288;道&#8288;别&#8288;名**  |  ✅   | 提升频道结果获取量与准确率，支持正则表达式                      |
+| **多&#8288;源&#8288;聚&#8288;合**  |  ✅   | 本地源、订阅源（支持设置UA，识别无效地址并自动停用）                |
+| **推&#8288;流**    |  ✅   | 改善弱网播放体验，支持浏览器直接播放，自动转码适配                  |
+| **回&#8288;放&#8288;类&#8288;接&#8288;口** |  ✅   | 回放类接口的获取与生成                                |
 | **EPG**   |  ✅   | 获取并显示频道预告内容                                |
-| **频道台标**  |  ✅   | 自定义频道台标，支持本地添加或远程库                         |
-| **测速验效**  |  ✅   | 获取延迟、速率、分辨率、帧率，过滤无效接口，支持实时输出结果             |
-| **播放截图**  |  ✅   | 可选自动截图，辅助验证频道内容，支持 GUI 预览与批量刷新 |
-| **广告过滤**  |  ✅   | 自动识别并过滤无信号/广告等循环占位源                        |
-| **高级偏好**  |  ✅   | 速率、分辨率、黑/白名单、归属地与运营商自定义过滤                  |
-| **结果管理**  |  ✅   | 结果分类存储与访问、日志记录、未匹配频道记录、统计分析、冻结过滤/解冻回归、数据缓存 |
-| **定时任务**  |  ✅   | 定时或间隔执行更新                                  |
-| **暂停与继续** |  ✅   | 桌面端更新过程中可暂停，并从当前进度继续                         |
-| **多平台部署** |  ✅   | 工作流、命令行、GUI 软件、Docker (amd64/arm64/arm v7) |
-| **更多功能**  |  ✨   | 详见[配置参数](#配置)章节                            |
+| **频&#8288;道&#8288;台&#8288;标**  |  ✅   | 自定义频道台标，支持本地添加或远程库                         |
+| **测&#8288;速&#8288;验&#8288;效**  |  ✅   | 获取延迟、速率、分辨率、帧率，过滤无效接口，支持实时输出结果             |
+| **播&#8288;放&#8288;截&#8288;图**  |  ✅   | 可选自动截图，辅助验证频道内容，支持 GUI 预览与批量刷新 |
+| **广&#8288;告&#8288;过&#8288;滤**  |  ✅   | 自动识别并过滤无信号/广告等循环占位源                        |
+| **高&#8288;级&#8288;偏&#8288;好**  |  ✅   | 速率、分辨率、黑/白名单、归属地与运营商自定义过滤                  |
+| **结&#8288;果&#8288;管&#8288;理**  |  ✅   | 结果分类存储与访问、日志记录、未匹配频道记录、统计分析、冻结过滤/解冻回归、数据缓存 |
+| **定&#8288;时&#8288;任&#8288;务**  |  ✅   | 定时或间隔执行更新                                  |
+| **暂&#8288;停&#8288;与&#8288;继&#8288;续** |  ✅   | 桌面端更新过程中可暂停，并从当前进度继续                         |
+| **多&#8288;平&#8288;台&#8288;部&#8288;署** |  ✅   | 工作流、命令行、GUI 软件、Docker (amd64/arm64/arm v7) |
+| **更&#8288;多&#8288;功&#8288;能**  |  ✨   | 详见[配置参数](#配置)章节                            |
 
 ## 配置
 
