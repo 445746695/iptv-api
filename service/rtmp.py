@@ -19,6 +19,7 @@ from utils.db import ensure_result_data_schema
 from utils.db import get_db_connection, return_db_connection
 from utils.ffmpeg import probe_url_sync, resolve_ffmpeg_executable
 from utils.i18n import t
+from utils.process import no_window_process_kwargs
 from utils.rtmp_runtime import rtmp_runtime_status
 from utils.tools import join_url, resource_path, render_nginx_conf
 
@@ -27,13 +28,11 @@ if sys.platform == "win32":
     nginx_conf_template = resource_path(os.path.join(nginx_dir, 'conf', 'nginx.conf.template'))
     nginx_conf = resource_path(os.path.join(nginx_dir, 'conf', 'nginx.conf'))
     nginx_path = resource_path(os.path.join(nginx_dir, 'nginx.exe'))
-    stop_path = resource_path(os.path.join(nginx_dir, 'stop.bat'))
 else:
     nginx_dir = resource_path(os.path.join(constants.output_dir, "runtime", "nginx"), persistent=True)
     nginx_conf_template = resource_path(os.path.join("service", "nginx.conf.template"))
     nginx_conf = os.path.join(nginx_dir, "conf", "nginx.conf")
     nginx_path = rtmp_runtime_status().get("executable") or ""
-    stop_path = ""
 app_rtmp_url = f"rtmp://127.0.0.1:{config.nginx_rtmp_port}"
 
 hls_running_streams = OrderedDict()
@@ -45,7 +44,15 @@ HLS_IDLE_TIMEOUT = config.rtmp_idle_timeout
 HLS_WAIT_TIMEOUT = 30
 HLS_WAIT_INTERVAL = 0.5
 MAX_STREAMS = config.rtmp_max_streams
-hls_temp_path = resource_path(os.path.join(nginx_dir, 'temp', 'hls'))
+
+
+def _get_hls_temp_path(runtime_dir):
+    if sys.platform.startswith("linux"):
+        return "/tmp/hls"
+    return resource_path(os.path.join(runtime_dir, "temp", "hls"))
+
+
+hls_temp_path = _get_hls_temp_path(nginx_dir)
 
 _hls_monitor_started_evt = threading.Event()
 _hls_monitor_lock = threading.Lock()
@@ -154,6 +161,7 @@ def _start_ffmpeg_process(cmd, channel_id):
     if sys.platform.startswith("linux"):
         parent_pid = os.getpid()
         kwargs["preexec_fn"] = lambda: _set_parent_death_signal(parent_pid)
+    kwargs.update(no_window_process_kwargs())
     process = subprocess.Popen(
         cmd,
         stdout=subprocess.DEVNULL,
@@ -237,8 +245,13 @@ def _get_video_encoder_args():
         executable = resolve_ffmpeg_executable()
         if not executable:
             raise FileNotFoundError("ffmpeg")
-        res = subprocess.run([executable, '-hide_banner', '-encoders'],
-                             capture_output=True, text=True, timeout=10)
+        res = subprocess.run(
+            [executable, '-hide_banner', '-encoders'],
+            capture_output=True,
+            text=True,
+            timeout=10,
+            **no_window_process_kwargs(),
+        )
         enc_list = res.stdout
     except Exception:
         enc_list = ''
@@ -272,7 +285,13 @@ def _get_video_encoder_candidates():
         executable = resolve_ffmpeg_executable()
         if not executable:
             raise FileNotFoundError("ffmpeg")
-        res = subprocess.run([executable, '-hide_banner', '-encoders'], capture_output=True, text=True, timeout=10)
+        res = subprocess.run(
+            [executable, '-hide_banner', '-encoders'],
+            capture_output=True,
+            text=True,
+            timeout=10,
+            **no_window_process_kwargs(),
+        )
         enc_list = res.stdout or ''
     except Exception:
         enc_list = ''
@@ -699,10 +718,16 @@ def start_rtmp_service():
     original_dir = os.getcwd()
     try:
         os.chdir(nginx_dir)
+        args = [nginx_path, "-p", f"{nginx_dir}{os.sep}", "-c", "conf/nginx.conf"]
         if sys.platform == "win32":
-            subprocess.Popen([nginx_path], shell=True)
+            subprocess.Popen(
+                args,
+                stdin=subprocess.DEVNULL,
+                stdout=subprocess.DEVNULL,
+                stderr=subprocess.DEVNULL,
+                **no_window_process_kwargs(),
+            )
         else:
-            args = [nginx_path, "-p", f"{nginx_dir}{os.sep}", "-c", "conf/nginx.conf"]
             check = subprocess.run(args + ["-t"], capture_output=True, text=True, timeout=10)
             if check.returncode != 0:
                 raise RuntimeError((check.stderr or check.stdout).strip())
@@ -728,11 +753,25 @@ def stop_rtmp_service():
     original_dir = os.getcwd()
     try:
         os.chdir(nginx_dir)
+        args = [
+            nginx_path,
+            "-p",
+            f"{nginx_dir}{os.sep}",
+            "-c",
+            "conf/nginx.conf",
+            "-s",
+            "stop",
+        ]
         if sys.platform == "win32":
-            subprocess.Popen([stop_path], shell=True)
+            subprocess.run(
+                args,
+                capture_output=True,
+                timeout=10,
+                **no_window_process_kwargs(),
+            )
         elif nginx_path and os.path.exists(nginx_conf):
             subprocess.run(
-                [nginx_path, "-p", f"{nginx_dir}{os.sep}", "-c", "conf/nginx.conf", "-s", "stop"],
+                args,
                 capture_output=True,
                 timeout=10,
             )
